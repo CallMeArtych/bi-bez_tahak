@@ -1,0 +1,151 @@
+\input opmac
+\chyph
+\input lmfonts
+\typosize[12/14]
+
+\def\lc{\left\lfloor}   
+\def\rc{\right\rfloor}
+
+\chap Šifrování
+
+\sec Substituční šifry
+
+Šifrují podle vzorce:
+
+$$
+c = |a \cdot p + k|_m, 0 \leq c \leq m, gcd(a, m) = 1
+$$
+
+\noindent 
+a dešifrují podle:
+$$
+p = |a^{-1} \cdot (c-b)|_m
+$$
+
+\sec Blokové šifry
+
+Šifrují bloky velikosti $n$ podle vzorce:
+
+$$
+\left| \left(\matrix{c_1 \cr \vdots \cr c_n}\right) \right|_m = \left| \left(\matrix{A_{1,1} & \ldots & A_{1,n} \cr \vdots & \ddots & \vdots \cr A_{n_1} & \ldots & A_{n,n} \cr}\right) \cdot \left(\matrix{p_1 \cr \vdots \cr p_n}\right) \right|_m
+$$
+
+\noindent 
+a dešifrují podle
+$$
+\left| \left(\matrix{p_1 \cr \vdots \cr p_n}\right) \right|_m = \left| \left(\matrix{A_{1,1} & \ldots & A_{1,n} \cr \vdots & \ddots & \vdots \cr A_{n_1} & \ldots & A_{n,n} \cr}\right) \cdot \left(\matrix{c_1 \cr \vdots \cr c_n}\right) \right|_m
+$$
+
+\noindent
+\secc Příklad:
+
+ST = STOP PAYMENT, velikost bloku = 3, 
+$$
+A = \left(\matrix{11 & 2 & 19 \cr 5 & 23 & 25 \cr 20 & 7 & 1 \cr}\right)
+$$
+
+\noindent
+Rozdělíme ST do bloků: STO PPA YME NTX, kde X je padding. Poté pro každou trojici použijeme šifrovací matici $A$. První blok zašífrujeme takto:
+
+$$
+\left| A \cdot \left(\matrix{S \cr T \cr O}\right) \right|_{26} = \left| \left(\matrix{11 & 2 & 19 \cr 5 & 23 & 25 \cr 20 & 7 & 1 \cr}\right) \cdot \left(\matrix{18 \cr 19 \cr 14}\right) \right|_{26} = \left| \left(\matrix{11 \cdot 18 + 2 \cdot 19 + 19 \cdot 14 \cr 5 \cdot 18 + 23 \cdot 19 + 25 \cdot 14 \cr 20 \cdot 18 + 7 \cdot 19 + 1 \cdot 14}\right) \right|_{26} = \left(\matrix{8 \cr 19 \cr 13}\right)
+$$
+
+\noindent
+A další bloky obdobně. Vyjde nám zpráva ITN NEP ACW ULA. Abychom tento text rozšifrovali, tak potřebujeme najít inverzí matici k matici $A$.
+
+$$
+det(A) = 11 \cdot 23 \cdot 1 + 2 \cdot 25 \cdot 20 + 19 \cdot 5 \cdot 7 - \left( 19 \cdot 23 \cdot 20 + 25 \cdot 7 \cdot 11 + 1 \cdot 2 \cdot 5 \right) = -8757
+$$
+
+\sec Exponenciální šífra
+
+\begitems \style n
+* Seskupíme čísla do $2 \cdot s$ dekadických číslic, kde $s$ je počet písmen v jednom bloku,
+* tyto bloku tvoří čísla menší než $m$,
+* zvolíme $2525 < m < 252525$, potom $s = 2$
+* 
+
+\enditems
+
+\sec Zřízení společného klíče
+
+\secc Pro 2 subjekty
+
+\begitems \style n
+* Zvolíme $m$ jako velké prvočíslo a $a$ jako celé číslo,
+* Subjekt A si zvolí svoje tajné $k_1, gcd(k_1, m - 1) = 1$, vypočítá $y_1 = \left| a^{k_1} \right|_m$ a pošle subjektu B,
+* Subjekt B si zvolí svoje tajné $k_2, gcd(k_2, m - 1) = 1$, vypočítá $y_2 = \left| a^{k_2} \right|_m$ a pošle subjektu A,
+* Subjekt A spočítá společný klíč K = $\left|y_{2}^{k_1}\right|_m$,
+* Subjekt B spočítá společný klíč K = $\left|y_{1}^{k_2}\right|_m$,
+\enditems
+
+\secc Pro N subjektů
+
+\sec Proudové šifry
+
+\chap Matematické postupy
+
+\sec Modulární operace
+
+\secc Dělení
+
+Definice dělení jako násobení multiplikativní inverzí.
+
+$$\left| 4 \over 3 \right|_{26} = |5 \cdot 3^{-1}|_{26} = |5 \cdot 9|_{26} = |45|_{26} = |9|_{26}$$
+
+\sec Hledání inverze
+
+Pro menší čísla lze použít tento vztah, kde $a$ a $a^{-1}$ jsou čísla k sobě navzájem iverzní v modulo $m$.
+Inverze čísla $a$ v modulo $m$ existuje pouze pokud platí $gcd(a,m) = 1$
+
+$$
+|a^{-1}|_{m} \rightarrow a \cdot a^{-1} = 1 (mod 26)
+$$
+\noindent
+Pro čísla větší lze použít rozšířený euklidův algoritmus.
+
+\sec Modulo a velké mocniny
+
+\sec Euklidův algoritmus
+
+Používá se k nalezení největšího společného dělitele. $gcd(a,b) = d$, kde $a > b$
+
+$$a_i \leftarrow a, b_i \leftarrow b$$
+\centerline{Opakuj dokud není $c_i = 0$, pak $gcd(a,b) = b_i$}
+$$a_i = k_i \cdot b_i + c_i$$
+$$a_i = k_{i-1}$$
+$$b_i = c_{i-1}$$
+
+\noindent
+Příklad:
+$$gcd(130,15) = d$$
+$$130 = 8 \cdot 15 + 10$$
+$$15 = 1 \cdot 10 + 5$$
+$$10 = 2 \cdot 5 \rightarrow gcd(130,15) = 5$$
+
+\sec Rozšířený euklidův algoritmus
+
+Používá se k nalezení inverze čísla $a$ v modulo $m$. $\alpha_{n-1} = a^{-1}$
+
+\begmulti 2
+
+\table{|r|ccc|}{\crli
+m & 1 & 0 & - \cr
+a & 0 & 1 & 1 \crli
+$r_i$ & $\alpha_i$ & $\beta_i$ & $q_i$ \cr
+$r_{i+1}$ & $\alpha_{i+1}$ & $\beta_{i+1}$ & $q_{i+1}$ \cr
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \cr
+$r_{n} = 0$ & $\alpha_{n}$ & $\beta_{n}$ & $q_{n}$ 
+\crli}
+
+$$r_i = r_{i-2} - q_{i-1} \cdot r_{i-1}$$
+$$\alpha_i = \alpha_{i-2} - q_{i-1} \cdot \alpha_{i-1}$$
+$$\beta_i = \beta_{i-2} - q_{i-1} \cdot \beta_{i-1}$$
+$$q_i = \lc r_{i-1} \over r_i \rc$$
+
+\endmulti
+
+
+
+\end
