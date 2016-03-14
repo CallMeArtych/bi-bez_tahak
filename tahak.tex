@@ -107,6 +107,24 @@ Pro čísla větší lze použít rozšířený euklidův algoritmus.
 
 \sec Modulo a velké mocniny
 
+Mějme zadáno $\left|a^k\right|_m$, kde $k$ je opravdu velké číslo.
+
+\begitems \style n
+* Rozdělíme číslo na součin jeho mocnin: $a^k=a^{k_1} \ldots \cdot a^{k_n}$, kde $\sum k_n = k$ a $k_n$ jsou čísla ve tvaru $2 \cdot n \in Z$
+* pro každé číslo $i < max(k_n)$ množiny mocnin vypočítáme jeho hodnotu v modulu m, využíváme k tomu předchozí hodnoty.
+\enditems
+
+\secc Příklad
+
+$$\left|5^{28}\right|_{17} = \left|5^{16} \cdot 5^8 \cdot 5^4\right| = \left|1 \cdot -1 \cdot -4\right|_{17} = 4$$
+$$5^{28} = 5^{16} \cdot 5^8 \cdot 5^4$$
+$$\left|5^1\right|_{17} = \left|5 \right|_{17} = \left|5\right|_{17}$$
+$$\left|5^2\right|_{17} = \left|25 \right|_{17} = \left|8\right|_{17}$$
+$$\left|5^4\right|_{17} = \left|5^2 \cdot 5^2\right|_{17} = \left|8 \cdot 8\right|_{17} = \left|13\right|_{17} = \left|-4\right|_{17}$$
+$$\left|5^8\right|_{17} = \left|5^4 \cdot 5^4\right|_{17} = \left|-4 \cdot -4\right|_{17} = \left|16\right|_{17} = \left|-1\right|_{17}$$
+$$\left|5^{16}\right|_{17} = \left|5^8 \cdot 5^8\right|_{17} = \left|-1 \cdot -1\right|_{17} = \left|1\right|_{17}$$
+$$$$
+
 \sec Euklidův algoritmus
 
 Používá se k nalezení největšího společného dělitele. $gcd(a,b) = d$, kde $a > b$
