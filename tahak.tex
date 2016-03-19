@@ -93,13 +93,17 @@ $$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
 * Určíme velikost bloku. $2525 < 2633$, tím pádem blokem budou 2 písmena převedená 4 číslice.
 * Převedeme šifrový text na jeho číselný ekvivalent
 $$
-1907\ 0818\ 0818\ 0013\ 0423\ 0012\ 1511\ 0414\ 0500\ 1304
-2315\ 1413\ 0413\ 1908\ 0019\ 0814\ 1302\ 0815\ 0704\ 1723
+\matrix{
+	1907 & 0818 & 0818 & 0013 & 0423 & 0012 & 1511 & 0414 & 0500 & 1304 \cr 
+	2315 & 1413 & 0413 & 1908 & 0019 & 0814 & 1302 & 0815 & 0704 & 1723
+}
 $$
 * Zašifrujeme každý blok podle vzorce.
 $$
-2199\ 1745\ 1745\ 1209\ 2437\ 2425\ 1729\ 1619\ 0935\ 0960
-1072\ 1541\ 1701\ 1553\ 0735\ 2064\ 1351\ 1704\ 1741\ 1459
+\matrix{
+	2199 & 1745 & 1745 & 1209 & 2437 & 2425 & 1729 & 1619 & 0935 & 0960 \cr
+	1072 & 1541 & 1701 & 1553 & 0735 & 2064 & 1351 & 1704 & 1741 & 1459
+}
 $$
 \enditems
 
@@ -111,8 +115,10 @@ Pro rozšifrování textu:
 * Vypočítáme klíč pro dešifrování z šifrovacího.
 * Na každý blok aplikujeme vzorec pro dešifrování.
 $$
-1907\ 0818\ 0818\ 0013\ 0423\ 0012\ 1511\ 0414\ 0500\ 1304
-2315\ 1413\ 0413\ 1908\ 0019\ 0814\ 1302\ 0815\ 0704\ 1723
+\matrix{
+	1907 & 0818 & 0818 & 0013 & 0423 & 0012 & 1511 & 0414 & 0500 & 1304 \cr 
+	2315 & 1413 & 0413 & 1908 & 0019 & 0814 & 1302 & 0815 & 0704 & 1723
+}
 $$
 * Převedeme číslice po 2 zpátky na znaky.
 $$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
