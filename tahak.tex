@@ -8,7 +8,7 @@
 
 \chap Šifrování
 
-\sec Substituční šifry
+\sec Afinní šífrování
 
 Šifrují podle vzorce:
 
@@ -60,13 +60,64 @@ $$
 
 \sec Exponenciální šífra
 
-\begitems \style n
-* Seskupíme čísla do $2 \cdot s$ dekadických číslic, kde $s$ je počet písmen v jednom bloku,
-* tyto bloku tvoří čísla menší než $m$,
-* zvolíme $2525 < m < 252525$, potom $s = 2$
-* 
+Pro většínu příkládů se uvažuje jako vstupní abeceda angličtina. Tím pádem $k = 25$ a $max = 2$.
 
+\secc Šifrování
+
+\begitems \style n
+* Zvolíme $e$ a $m$, takové že $gcd(e,m) = 1$
+* Převedeme každý znak v otevřeném textu na jeho číselnou reprezentaci zarovranou nulama na velikost největší číselné reprezentace znaku abecedy ($max$).
+* Zvolíme velikost bloku $n$ takovou, aby platilo: $max \cdot n \cdot str(k) < m$ a zároveň byla největší možná.
+* Vezmeme blok $n \cdot max$ číslic a použijeme na výsledné číslo vzorec:
+$$c=\left| p^e \right|_{m}: e = \left| d^{-1} \right|_m$$
 \enditems
+
+
+\secc Dešifrování
+
+\begitems \style n
+* Vypočítáme velikost bloku číslic $n$.
+* Použijeme vzorec pro dešifrování pro každý blok číslic velikosti $max \cdot n$ a převedeme po $max$ podblocích zpátky na znaky.
+$$p=\left| c^d \right|_{m}: d = \left| e^{-1} \right|_m$$
+\enditems
+
+\secc Příklad
+
+Mějme $m = 2633$ a nechť šifrovací klíč je $e = 29$. A otevřený text:
+Jedná se o anglickou abecedu. Tím pádem $k = 25$ a $max = 2$.
+
+$$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
+
+\begitems \style n
+* Ověříme $gcd(e, m) = 1$.
+* Určíme velikost bloku. $2525 < 2633$, tím pádem blokem budou 2 písmena převedená 4 číslice.
+* Převedeme šifrový text na jeho číselný ekvivalent
+$$
+1907\ 0818\ 0818\ 0013\ 0423\ 0012\ 1511\ 0414\ 0500\ 1304
+2315\ 1413\ 0413\ 1908\ 0019\ 0814\ 1302\ 0815\ 0704\ 1723
+$$
+* Zašifrujeme každý blok podle vzorce.
+$$
+2199\ 1745\ 1745\ 1209\ 2437\ 2425\ 1729\ 1619\ 0935\ 0960
+1072\ 1541\ 1701\ 1553\ 0735\ 2064\ 1351\ 1704\ 1741\ 1459
+$$
+\enditems
+
+\noindent
+Pro rozšifrování textu:
+
+\begitems \style n
+* Určíme velikost bloku číslic.
+* Vypočítáme klíč pro dešifrování z šifrovacího.
+* Na každý blok aplikujeme vzorec pro dešifrování.
+$$
+1907\ 0818\ 0818\ 0013\ 0423\ 0012\ 1511\ 0414\ 0500\ 1304
+2315\ 1413\ 0413\ 1908\ 0019\ 0814\ 1302\ 0815\ 0704\ 1723
+$$
+* Převedeme číslice po 2 zpátky na znaky.
+$$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
+\enditems
+
 
 \sec Zřízení společného klíče
 
