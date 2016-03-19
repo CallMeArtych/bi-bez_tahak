@@ -73,14 +73,21 @@ $$
 \secc Pro 2 subjekty
 
 \begitems \style n
-* Zvolíme $m$ jako velké prvočíslo a $a$ jako celé číslo,
-* Subjekt A si zvolí svoje tajné $k_1, gcd(k_1, m - 1) = 1$, vypočítá $y_1 = \left| a^{k_1} \right|_m$ a pošle subjektu B,
-* Subjekt B si zvolí svoje tajné $k_2, gcd(k_2, m - 1) = 1$, vypočítá $y_2 = \left| a^{k_2} \right|_m$ a pošle subjektu A,
-* Subjekt A spočítá společný klíč K = $\left|y_{2}^{k_1}\right|_m$,
-* Subjekt B spočítá společný klíč K = $\left|y_{1}^{k_2}\right|_m$,
+* Zvolíme $m$ jako velké prvočíslo a $0 < a < m$.
+* Subjekt A si zvolí svoje tajné $k_1, gcd(k_1, m - 1) = 1$, vypočítá $y_1 = \left| a^{k_1} \right|_m$ a pošle subjektu B.
+* Subjekt B si zvolí svoje tajné $k_2, gcd(k_2, m - 1) = 1$, vypočítá $y_2 = \left| a^{k_2} \right|_m$ a pošle subjektu A.
+* Subjekt A spočítá společný klíč $K = \left|a^{k_1 \cdot k_2}\right|_m = \left|y_{2}^{k_1}\right|_m$.
+* Subjekt B spočítá společný klíč $K = \left|a^{k_1 \cdot k_2}\right|_m = \left|y_{1}^{k_2}\right|_m$.
 \enditems
 
 \secc Pro N subjektů
+
+\begitems \style n
+* Zvolíme $m$ jako velké prvočíslo a $0 < a < m$.
+* Každý subjekt si zvolí svoje tajné $k_i, gcd(k_i, m - 1) = 1$ a vypočítá $y_i = \left| a^{k_i} \right|_m$.
+* Klíč bude mít podobu $K = a^{k_1 \cdot \ldots \cdot k_n}$
+* 
+\enditems
 
 \sec Proudové šifry
 
