@@ -131,8 +131,6 @@ Mějme zadáno $\left|a^k\right|_m$, kde $k$ je opravdu velké číslo.
 * pro každé číslo $i < max(k_n)$ množiny mocnin vypočítáme jeho hodnotu v modulu m, využíváme k tomu předchozí hodnoty.
 \enditems
 
-\secc Příklad
-
 $$\left|5^{28}\right|_{17} = \left|5^{16} \cdot 5^8 \cdot 5^4\right| = \left|1 \cdot -1 \cdot -4\right|_{17} = 4$$
 $$5^{28} = 5^{16} \cdot 5^8 \cdot 5^4$$
 $$\left|5^1\right|_{17} = \left|5 \right|_{17} = \left|5\right|_{17}$$
@@ -140,7 +138,6 @@ $$\left|5^2\right|_{17} = \left|25 \right|_{17} = \left|8\right|_{17}$$
 $$\left|5^4\right|_{17} = \left|5^2 \cdot 5^2\right|_{17} = \left|8 \cdot 8\right|_{17} = \left|13\right|_{17} = \left|-4\right|_{17}$$
 $$\left|5^8\right|_{17} = \left|5^4 \cdot 5^4\right|_{17} = \left|-4 \cdot -4\right|_{17} = \left|16\right|_{17} = \left|-1\right|_{17}$$
 $$\left|5^{16}\right|_{17} = \left|5^8 \cdot 5^8\right|_{17} = \left|-1 \cdot -1\right|_{17} = \left|1\right|_{17}$$
-$$$$
 
 \sec Euklidův algoritmus
 
@@ -161,13 +158,13 @@ $$10 = 2 \cdot 5 \rightarrow gcd(130,15) = 5$$
 
 \sec Rozšířený euklidův algoritmus
 
-Používá se k nalezení inverze čísla $a$ v modulo $m$. $\alpha_{n-1} = a^{-1}$
+Používá se k nalezení inverze čísla $a$ v modulo $m$. $\beta_{n-1} = a^{-1}$
 
 \begmulti 2
 
 \table{|r|ccc|}{\crli
 m & 1 & 0 & - \cr
-a & 0 & 1 & 1 \crli
+a & 0 & 1 & $q_i - 1$ \crli
 $r_i$ & $\alpha_i$ & $\beta_i$ & $q_i$ \cr
 $r_{i+1}$ & $\alpha_{i+1}$ & $\beta_{i+1}$ & $q_{i+1}$ \cr
 $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \cr
