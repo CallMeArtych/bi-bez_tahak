@@ -235,6 +235,55 @@ $$q_i = \lc r_{i-1} \over r_i \rc$$
 
 \endmulti
 
+\chap Hašovací funkce
 
+Hašovací funkce $h$ zpracovává praktický neomezeně dlouhá vstupní data $M$ na výstupní hašový kód $h(M)$ stanovené délky $n$ bitů.
+Kvůli potenciálně strojově nezvladnutelné délce vstupní zprávy, ta musí být nejprve rozdělená na bloky konstantní velikosti (např. 512 bitů u MD5 a SHA-0/1/256).
+
+Ke vstupní zprávě je vždy doplněn padding tak, že celá zpráva je zarovnáná na celé bloky (i přesto že byla zarovnáná i bez paddingu). Padding začíná 1 a je doplněn nulama tak, aby do konce bloku zbývalo 64 bitu, kam je uložená délka původní zprávy.
+
+\begitems \style o
+* MD5 (128-bitový hash kód)
+* SHA-1 (160-bitový hash kód)
+* SHA-256 (256-bitový hash kód)
+* SHA-512 (512-bitový hash kód)
+\enditems
+
+% {\bf Damgard-Merklova konstrukce}
+% \begitems \style n
+% * Hašování probíha postupně po blocích $M_i$ pomocí tzv. kompresní funkce.
+% * Výsledkem kompresní funkce v každem kroku $i$ je tzv. kontext $H_{i}$.
+% * Do kompresní funkce vždy vstupuje příslušný blok $M_i$ a kontext $H_{i-1}$ z předchozího kroku.
+% * $H_0$ je inicializační vektor $IV$.
+% * Celý poslední kontext $H_N$ nebo jeho čast (závisí na délce haš kódu zvolené metody a velikosti kontextu) je výsledný haš kód.
+
+% Pro DM konstrukcí plátí -- pokud je kompresní funkce bezkolizní, pak je cela hašovací funkce z ní konstruovaná je bezkolizní.
+
+\sec Kolize 1. řádu
+
+Nalezení dvou různých zprav se stejným haš kódem.
+
+$$P(N,k) = p$$
+\begitems \style o
+* $p$ je pravděpodobnost nalezení kolize.
+* $N$ je počet všech možných haš kódů.
+* $k$ je počet haš kódů postačujicí k nalezení kolize s pravděpodobností $p$.
+\enditems
+
+$$k \approx \sqrt{-2N\ln(1 - p)}$$
+
+{\bf Pro SHA-1 (160-bitový hash kód) a pravděpodobnosti 50\%}
+$$N = 2^{160} = 2^n, p = 0.5$$
+$$ k \approx \sqrt{-2 \ln(1 - 0.5) 2^n} \approx \sqrt{-2 \cdot -0.7}\sqrt{2^n} \approx \sqrt{1.4} \cdot 2^{n \over 2} \approx 1.2 \cdot 2^{n \over 2} \approx 2^{160 \over 2} \approx 2^{80} $$
+
+{\bf Pro SHA-512 (512-bitový hash kód) a pravděpodobnosti 70\%}
+$$N = 2^{512} = 2^n, p = 0.7$$
+$$ k \approx \sqrt{-2 \ln(1 - 0.7) 2^n} \approx \sqrt{-2 \cdot -1.2}\sqrt{2^n} \approx \sqrt{2.4} \cdot 2^{n \over 2} \approx 1.55 \cdot 2^{n \over 2} \approx 2^{512 \over 2} \approx 2^{256} $$
+
+{\bf Pro SHA-256 (256-bitový hash kód) a pravděpodobnosti 99\%}
+$$N = 2^{256} = 2^n, p = 0.99$$
+$$ k \approx \sqrt{-2 \ln(1 - 0.99) 2^n} \approx \sqrt{-2 \cdot -4.6}\sqrt{2^n} \approx \sqrt{9.2} \cdot 2^{n \over 2} \approx 3 \cdot 2^{n \over 2} \approx 2^{256 \over 2} \approx 2^{128} $$
+
+Jak jde videt, je to nejakej bullshit a asi vzorec neplati pro pravdepodobnost jinou nez 50\%.
 
 \end
