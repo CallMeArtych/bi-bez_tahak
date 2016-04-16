@@ -146,7 +146,120 @@ $$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
 * 
 \enditems
 
-\sec Proudové šifry
+\sec RSA
+
+Bezpečtnostním prvkem je problém faktorizace.
+
+\secc Příprava
+
+\begitems \style n
+* Subjekt A si zvolí 2 velká prvočísla $p$ a $q$.
+* Subjekt A vypočítá modul $n = p \cdot q$.
+* Subjekt A zvolí $e$ takové, že $gcd\left(e, \phi\left(n\right)\right) = 1$
+* Subjekt A vypočítá $d = \left|e^{-1}\right|_{\phi\left(n\right)}$
+* Subjekt A vypočítá veřejný klíč $VK = \left(n, e\right)$.
+* Subjekt A vypočítá soukromý klíč $SK = \left(n, d\right)$.
+* Subjekt A zveřejní $VK$, podle kterého nám budou ostatní subjekty posílat šifrové zprávy.
+\enditems
+
+\secc Šifrování
+
+\begitems \style n
+* Subjekt B si přečte veřejný klíč $VK = \left(n, e\right)$ subjektu A.
+* Subjekt B převede zprávu do bloků délky řetězcové reprezentace $n$.
+* Subjekt B zašífruje každý blok podle vztahu $c = \left|m^e\right|_n$
+\enditems
+
+\secc Dešifrování
+
+\begitems \style n
+* Subjekt A převede zprávu do bloků délky řetězcové reprezentace $n$.
+* Subjekt A dešífrujeme každý blok podle vztahu $m = \left|c^d\right|_n$ za použití svého privátního klíče.
+\enditems
+
+\secc Příklad
+
+$$p = 5, q = 11, e = 7$$
+$$n = p \cdot q = 5 \cdot 11 = 55$$
+$$VK = (n, e) = (55, 7)$$
+$$d = \left|e^{-1}\right|_{\phi(n)} = \left|7^{-1}\right|_{\phi(55)} = \left|7^{-1}\right|_{\phi(5 \cdot 11)} = \left|7^{-1}\right|_{40} = 23$$
+$$PK = (n, d) = (55, 23)$$
+
+Šifrování
+$$m = PUBLIC KEY CRYPTOGRAPHY$$
+$$m = \matrix{1520 & 0111 & 0802 & 1004 & 2402 & 1724 & 1519 & 1406 & 1700 & 1507 & 2423}$$
+$$c = \left|m_i^e\right|_n$$
+
+Dešifrování
+$$c = \ldots$$
+$$m = \left|c_i^d\right|_n$$
+
+\sec El Gamal
+
+Založen na problému diskrétního logaritmu.
+
+\secc Příprava
+
+\begitems \style n
+* Subjekt A si zvolí prvočísla $m$ a $g$ taková, aby $g$ bylo generátorem grupy $Z_m$.
+* Subjekt A si náhodně zvolí náhodné $k_A$ takové, že $0 < k_A < m$.
+* Subjekt A vypočítá $y_A = \left|g^{k_A}\right|_m$
+* Subjekt A nasdílí $VK = (m, g, y_A)$.
+* Subjekt A si uloží $SK = (k_A)$.
+\enditems
+
+\secc Šifrování
+
+\begitems \style n
+* Subjekt B si náhodně zvolí náhodné $k_B$ takové, že $0 < k_B < m$.
+* Subjekt B vypočítá společný sdílený klíč $K = \left|g^{k_A \cdot k_B}\right| = \left|y_A^{k_B}\right|$
+* Subjekt B zašifruje zprávu podle vztahu $c = \left|p \cdot K\right|_m$.
+* Subjekt B pošle subjektu A dvojici $\left(y_B, c\right)$
+\enditems
+
+\secc Dešifrování
+
+\begitems \style n
+* Subjekt A dostal od B dvojici $\left(y_B, c\right)$.
+* Subjekt A vypočítá společný sdílený klíč $K = \left|g^{k_A \cdot k_B}\right| = \left|y_B^{k_A}\right|$
+* Subjekt A dešifruje zprávu podle $p = \left|c \cdot K^{-1}\right|_m$
+\enditems
+
+
+\sec Narozeninový paradox
+
+\sec Entropie
+
+Množství informace obsažené ve zprávě. 
+Entropie zprávy ze zdroje X, kde $p_1 \ldots p_n$ jsou pravděpodobnosti zpráv $X_1 \ldots X_n$ zdroje X.
+
+$$
+H(X) = -\sum{p_i \cdot log(p_i)}
+$$
+\noindent
+$H(X)$ vyjadřuje počet bitů nutných k zakódování zprávy $X_i$
+
+\secc Příklad
+
+\table{|c|c|c|}{\crli
+\# & P & $p_i$ \crli
+4 & $1 / 16$ & 1/4 \cr
+2 & $1 / 8$ & 1/4 \cr
+2 & $1 / 4$ & 1/2 \cr
+\crli}
+
+$$
+H(X) = -\sum{p_i \cdot log(p_i)} = -(1/4 \cdot log(1/16) + 1/4 \cdot log(1/8) + 1/2 \cdot log(1/4)) = 11/4
+$$
+
+\secc Pomůcky
+
+$$-log_2\left({1 \over n}\right) = log(n)$$
+$$log_2\left({1 \over 2^n}\right) = -n = -log_2\left(2^n\right)$$
+
+\sec Vzdálenost jednoznačnosti
+
+Počet znaků OT, pro které množství informace o OT obsažené v ŠT dosáhne takového bodu, že je možný jen jediný OT.
 
 \chap Matematické postupy
 
@@ -234,6 +347,23 @@ $$\beta_i = \beta_{i-2} - q_{i-1} \cdot \beta_{i-1}$$
 $$q_i = \lc r_{i-1} \over r_i \rc$$
 
 \endmulti
+
+\sec Multiplikativní grupy
+
+Algoritmus ověření zda $g$ je generátorem grupy $m$.
+
+$$\left|g^i\right| = Z_m; i = 1 \ldots m - 1$$
+
+\noindent
+Tvoříme řádky v tabulce. Pokud narazíme na $z = 1$, pak to znamená, že všechny dosud napsaná $z$ se zopakují (včetně té 1), takže se začínáme cyklit. Pokud narazíme na $z = -1$, tak se začne všechno opakovat jen s opačným znaménkem.
+
+\table{|c|c|}{\crli
+$i$ & $\left|g^i\right|_m$ \crli
+1 & $z_1$ \cr
+2 & $z_2$ \cr
+$\vdots$ & $\vdots$ \cr
+$m-1$ & $z_{m-1}$ \cr
+\crli}
 
 
 
