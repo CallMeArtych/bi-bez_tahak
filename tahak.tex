@@ -225,6 +225,40 @@ Založen na problému diskrétního logaritmu.
 * Subjekt A dešifruje zprávu podle $p = \left|c \cdot K^{-1}\right|_m$
 \enditems
 
+\sec Operační módy
+
+\centerline {\picwidth=\hsize \inspic operacni_mody.png }
+
+\secc EBC - Electronic CodeBook
+
+Stejné bloky OT mají stejné bloky ŠT.
+
+$$ŠT_i = E_k\left(OT_i\right)$$
+$$OT_i = D_k\left(ŠT_i\right)$$
+
+\secc CBC - Cipher Block Chaining
+
+Možnost samosynchronizace při chybě (pokazí - pokažené - OK). Inicilizační vektor nám zajistí, že 2 stejné zprávy mohou být odlišně zašifrovány.
+
+$$ŠT_0 = IV$$
+$$ŠT_i = E_k\left(OT_i \oplus ŠT_{i-1} \right)$$
+$$OT_i = D_k\left(ŠT_{i} \right) \oplus ŠT_{i-1}$$
+
+\secc CFB - Cipher FeedBack
+
+Čistě synchronní.
+
+$$ŠT_0 = IV$$
+$$ŠT_i = E_k\left(ŠT_{i-1} \right) \oplus OT_i$$
+$$OT_i = E_k\left(ŠT_{i-1} \right) \oplus ŠT_i$$
+
+\secc OFB - Output FeedBack
+
+Čistě synchronní.
+
+$$H = IV = ŠT_0$$
+$$ŠT_i = OT_i \oplus H, H = E_k\left(H\right)$$
+$$OT_i = ŠT_i \oplus H, H = E_k\left(H\right)$$
 
 \sec Narozeninový paradox
 
