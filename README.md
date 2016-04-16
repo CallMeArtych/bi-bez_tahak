@@ -1,4 +1,4 @@
-# AAG tahák
+# BEZ tahák
 
 Super tahák pomocí kterého dostanem Áčko z BEZů.
 
