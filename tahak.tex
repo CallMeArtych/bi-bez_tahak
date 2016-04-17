@@ -265,31 +265,80 @@ $$OT_i = ŠT_i \oplus H, H = E_k\left(H\right)$$
 \sec Entropie
 
 Množství informace obsažené ve zprávě. 
-Entropie zprávy ze zdroje X, kde $p_1 \ldots p_n$ jsou pravděpodobnosti zpráv $X_1 \ldots X_n$ zdroje X.
+Entropie zprávy ze zdroje $X$, kde $p_1 \ldots p_n$ jsou pravděpodobnosti zpráv $X_1 \ldots X_n$ zdroje $X$.
 
 $$
-H(X) = -\sum{p_i \cdot log(p_i)}
+H(X) = -\sum_{i = 1}^{n}{p_i \cdot \log_{2}{(p_i)}}
 $$
 \noindent
 $H(X)$ vyjadřuje počet bitů nutných k zakódování zprávy $X_i$
 
-\secc Příklad
-
-\table{|c|c|c|}{\crli
-\# & P & $p_i$ \crli
-4 & $1 / 16$ & 1/4 \cr
-2 & $1 / 8$ & 1/4 \cr
-2 & $1 / 4$ & 1/2 \cr
-\crli}
-
-$$
-H(X) = -\sum{p_i \cdot log(p_i)} = -(1/4 \cdot log(1/16) + 1/4 \cdot log(1/8) + 1/2 \cdot log(1/4)) = 11/4
-$$
+\begitems \style o
+* Maximalni entropie nastává pokud všechný generované zprávy maji stejnou pravděpodobnost $p_1 = p_2 = \ldots = p_n$.
+Potom $H(X) = \log_{2}{(n)}$.
+* Minimalní entropie nastává pokud je generovaná jedina zpráva s pravděpodobnosti $p_1 = 1$.
+Potom $H(X) = 0$.
+\enditems
 
 \secc Pomůcky
 
-$$-log_2\left({1 \over n}\right) = log(n)$$
-$$log_2\left({1 \over 2^n}\right) = -n = -log_2\left(2^n\right)$$
+$$
+-\log_{2}{ \left( {1 \over 2^n} \right) }
+= -(-\log_{2}{(2^n)})
+= -(-n)
+= n
+$$
+
+\secc Příklad
+
+\table{|c|c|c|}{\crli
+$n$ & $P(n)$ & $p_i$ \crli
+4 & $1 / 16$ & $1 / 4$ \cr
+2 & $1 / 8$ & $1 / 4$ \cr
+2 & $1 / 4$ & $1 / 2$ \cr
+\crli}
+
+\begitems \style o
+* $n$ - počet zpráv jednoho typu.
+* $P(n)$ - pravděpodobnost výskytu jedné zprávy z $n$.
+* $p_i$ - celková pravděpodobnost výskytu zprávý jednoho typu ($P(n) \cdot n$).
+\enditems
+
+$$ \displaylines{
+H(X) = - \sum_{i = 1}^{n}{ p_i \cdot \log_{2}{(p_i)} }
+= - {1 \over 4} \cdot \log_{2}{ \left( {1 \over 4} \right) }
+- {1 \over 4} \cdot \log_{2}{ \left( {1 \over 4} \right) }
+- {1 \over 2} \cdot \log_{2}{ \left( {1 \over 2} \right) } \cr
+= {2 \over 4} + {2 \over 4} + {1 \over 2}
+= {6 \over 4} = 1.5
+}
+$$
+
+\secc Příklad
+
+Zdroj zpráv X posíla 4 různé zprávy s pravděpodobnostmi $p_1 = 1/8$, $p_2 = 1/4$, $p_3 = 1/2$, $p_4 = 1/8$
+
+$$ \displaylines{
+H(X) = - \sum_{i = 1}^{n}{ p_i \cdot \log_{2}{(p_i)} }
+= - {1 \over 8} \cdot \log_{2}{ \left( {1 \over 8} \right) }
+- {1 \over 4} \cdot \log_{2}{ \left( {1 \over 4} \right) }
+- {1 \over 2} \cdot \log_{2}{ \left( {1 \over 2} \right) }
+- {1 \over 8} \cdot \log_{2}{ \left( {1 \over 8} \right) } \cr
+= {3 \over 8} + {2 \over 4} + {1 \over 2} + {3 \over 8}
+= {14 \over 8} = 1.75
+}
+$$
+\noindent
+Jaká by byla entropie, pokud bychom změnili pravděpodobnosti tak, aby byly všechny stejné.
+
+$$
+H(X) = - \sum_{i = 1}^{n}{ p_i \cdot \log_{2}{(p_i)} }
+= -4 \cdot {1 \over 4} \cdot \log_{2}{ \left( {1 \over 4} \right) }
+= 4 \cdot {2 \over 4} = 2
+$$
+
+\noindent
+Neboli $H(X) = \log_{2}{(n)} = \log_{2}{(4)} = 2$.
 
 \sec Vzdálenost jednoznačnosti
 
