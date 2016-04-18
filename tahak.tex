@@ -343,7 +343,52 @@ Neboli $H(X) = \log_{2}{(n)} = \log_{2}{(4)} = 2$.
 
 \sec Vzdálenost jednoznačnosti
 
-Počet znaků OT, pro které množství informace o OT obsažené v ŠT dosáhne takového bodu, že je možný jen jediný OT.
+Počet znaků šifrového textu takový, že mu odpovídá jen jediný smysluplný otevřený text, při pokusu o prolomení hrubou silou.
+
+$$
+\delta_U = {H(K) \over D}
+$$
+\begitems \style o
+* $H(K)$ je entropie klíče: $H(K) = \log_{2}{(K)}$, kde $K$ je počet možných klíčů a všechný klíče jsou stejně pravděpodobné.
+* $D$ je nadbytečnost jazyka: $D = R - r$.
+* $R$ je absolutní obsážnost jazyka: $R = \log_{2}{(L)}$, kde $L$ je počet znaků v abecedě.
+* $r$ je (skutečná) obsažnost jazyka: $r = \lim_{N \rightarrow \infty}{ \left( {H(X) \over N} \right) }$, kde $X$ je zdroj zpráv a $N$ je délka zprávy.
+Obvýkle je daná - pro angličtinu $r \in \langle 1.3, 1.5 \rangle$.
+\enditems
+
+\secc Příklad
+
+Mějme blokovou šifru AES-256 s délkou klíče 256 bitů. Touto šifrou je zašifrován anglický text zapsaný v kódování ASCII 8-bit. Kolik znaků šífrového textu musíme odchytit, aby mu statistický odpovidala jen jedna smysluplná dešifrováná zpráva.
+
+$$H(K) = \log_{2}{(K)} = \log_{2}{(2^{256})} = 256$$
+$$R = \log_{2}{(L)} = \log_{2}{(2^8)} = 8$$
+$$r = 1.5$$
+$$D = R - r = 8 - 1.5 = 6.5$$
+$$\delta_U = {H(K) \over D} = {256 \over 6.5} = 39.38$$
+
+\noindent
+Stačí 40 znaků šifrového textu.
+
+\secc Příklad
+
+Mějme blokovou šifru 3DES-168 s délkou klíče 256 bitů. Touto šifrou je zašifrován anglický text zapsaný v kódování ASCII 8-bit (UTF-16, UTF-32,$\ldots$). Jaká je vzdálenost jednoznačnosti?
+
+$$H(K) = \log_{2}{(2^{168})} = 168$$
+$$R = \log_{2}{( 2^{(8, 16, 32)} )} = 8, 16, 32$$
+$$r = 1.5$$
+$$D = R - r = (8, 16, 32) - 1.5 = 6.5, 14.5, 30.5$$
+$$\delta_U = {H(K) \over D} = {168 \over (6.5, 14.5, 30.5)} = 25.85, 11.59, 5.51$$
+
+\secc Příklad
+
+Jaká je požadováná délka klíče šifry, aby pro zprávy psané v angličtině v kódování ASCII 8-bit byla vzdálenost jednoznačnosti cca 20 znaků.
+
+$$\delta_U = {H(K) \over D}$$
+$$H(K) = \delta_U \cdot D$$
+$$D = 6.5$$
+$$H(K) = 20 \cdot 6.5 = 130$$
+\noindent
+Požadováná délka klíče je 130 bitů.
 
 \chap Matematické postupy
 
