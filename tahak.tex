@@ -212,8 +212,9 @@ Založen na problému diskrétního logaritmu.
 
 \begitems \style n
 * Subjekt B si náhodně zvolí náhodné $k_B$ takové, že $0 < k_B < m$.
-* Subjekt B vypočítá společný sdílený klíč $K = \left|g^{k_A \cdot k_B}\right| = \left|y_A^{k_B}\right|$
+* Subjekt B vypočítá společný sdílený klíč $K = \left|g^{k_A \cdot k_B}\right|_m = \left|y_A^{k_B}\right|_m$
 * Subjekt B zašifruje zprávu podle vztahu $c = \left|p \cdot K\right|_m$.
+* Subjekt B vypočítá $y_B = \left|g^{k_B}\right|_m$
 * Subjekt B pošle subjektu A dvojici $\left(y_B, c\right)$
 \enditems
 
