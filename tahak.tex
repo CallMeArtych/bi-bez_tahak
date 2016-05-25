@@ -6,7 +6,72 @@
 \def\lc{\left\lfloor}   
 \def\rc{\right\rfloor}
 
+\chap Klasifikace šifrovacích algoritmů
+
+\sec Monoalfabetická
+
+používáme stále stejnou záměnu pro celý OT (písmeno A se vždy zobrazí na písmeno K)
+
+\sec Polyalfabetická
+
+písmeno může mít více záměn
+
+\sec Substituční
+
+druh šifry, při které dochází k záměně (substituci) nějaké množiny symbolů za jinou množinu symbolů. Cílem substituce je konfúze, tj. ztížení určení způsobu transformace zprávy a klíče na ŠT.
+
+\sec Transpoziční
+
+spočívá ve změně pořadí znaků podle určitého pravidla. Cílem transpozice je difúze, tj. rozptyl informace zprávy nebo klíče po celé šíří ŠT.
+
+\sec Bloková
+
+šifruje bloky zvlášť. Abychom předešli šifrování stejných bloků OT na stejné bloky ŠT, tak zavádíme inicilizační vektor jako náhodnou veličinu, kterou přidáme do šifrovacího procesu.
+
+\sec Proudová
+
+bloková šífra s velikostí bloku 1, ale každý blok je zpracováván jinou substitucí.
+
+\sec Asymetrická
+
+klíč pro dešífrování se nerovná klíči pro šífrování.
+
+\sec Symetrická 
+
+klíč pro dešífrování se rovná klíči pro šífrování.
+
+\sec Synchronní proudová
+
+proud hesla nezávisí na OT ani na ŠT. Výpadej jednoho znaku nenaruší celý proces. 
+
+\sec Asynchronní proudová 
+
+výpadek naruší proces.
+
+\medskip\hrule\medskip
+
+\hbox to \hsize {
+\hfill
+\table{|r|l|}{\crl
+	Monoalfabetická & Caesarova, Afinní\crli
+	Polyalfabetická & Viegenerova, Hillova, Vernamova \crli
+	Substituční & Viegenerova, Caesarova, Afinní, Hillova, Vernamova \crli
+	Transpoziční & sloupcová transpozice\crli
+	Bloková & Hillova šifra, ECB, CBC, CFB, AES, RSA, exponenciální\crli
+	Proudová & OFB, CTR\crli
+	Asymetrická & \crli
+	Symetrická & \crli
+	Synchronní & \crli
+	Asynchronní & \crli
+}
+\hfill
+}
+
 \chap Šifrování
+
+\sec Vernamova šifra 
+
+Posuneme každý znak v OT o náhodný počet znaků. Tím pádem potřebujeme klíč velikosti OT a pokud je takový klíč opravdu náhodná, tak je tato šífra nerozluštitelná.
 
 \sec Afinní šífrování
 
@@ -125,7 +190,7 @@ $$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
 \enditems
 
 
-\sec Zřízení společného klíče
+\sec Zřízení společného klíče (Diffie-Helman)
 
 \secc Pro 2 subjekty
 
@@ -155,7 +220,7 @@ Bezpečtnostním prvkem je problém faktorizace.
 \begitems \style n
 * Subjekt A si zvolí 2 velká prvočísla $p$ a $q$.
 * Subjekt A vypočítá modul $n = p \cdot q$.
-* Subjekt A zvolí $e$ takové, že $gcd\left(e, \phi\left(n\right)\right) = 1$
+* Subjekt A zvolí $e$ takové, že $gcd\left(e, \phi\left(n\right)\right) = 1$ a $1 < e < n$
 * Subjekt A vypočítá $d = \left|e^{-1}\right|_{\phi\left(n\right)}$
 * Subjekt A vypočítá veřejný klíč $VK = \left(n, e\right)$.
 * Subjekt A vypočítá soukromý klíč $SK = \left(n, d\right)$.
@@ -193,6 +258,69 @@ $$c = \left|m_i^e\right|_n$$
 Dešifrování
 $$c = \ldots$$
 $$m = \left|c_i^d\right|_n$$
+
+\sec RSA-CRT
+
+Zrychlení 4 až 8 násobné oproti půuvodnímu dešifrovacímu výpočtu. Princip vychází z čínské věty o zbytcích.
+
+\secc Příprava
+
+\begitems \style n
+* Subjekt A si zvolí 2 velká prvočísla $p$ a $q$.
+* Subjekt A vypočítá modul $n = p \cdot q$.
+* Subjekt A zvolí $e$ takové, že $gcd\left(e, \phi\left(n\right)\right) = 1$ a $1 < e < n$
+* Subjekt A vypočítá $d_p$ tak, aby platilo $e \cdot d_p \equiv 1 \left(\bmod\ p-1\right)$
+* Subjekt A vypočítá $d_q$ tak, aby platilo $e \cdot d_q \equiv 1 \left(\bmod\ q-1\right)$
+* Subjekt A vypočítá $q_{inv}$ jako $q_{inv} = \left|q^-1\right|_n$
+* Subjekt A vypočítá soukromý klíč $SK = \left(n, p, q, d_p, d_q, q_{inv}\right)$.
+* Subjekt A vypočítá veřejný klíč $VK = \left(n, e\right)$.
+* Subjekt A zveřejní $VK$, podle kterého nám budou ostatní subjekty posílat šifrové zprávy.
+\enditems
+
+\secc Šifrování
+
+\begitems \style n
+* Subjekt B si přečte veřejný klíč $VK = \left(n, e\right)$ subjektu A.
+* Subjekt B převede zprávu do bloků délky řetězcové reprezentace $n$.
+* Subjekt B zašífruje každý blok podle vztahu $c = \left|m^e\right|_n$
+\enditems
+
+\secc Dešifrování
+
+\begitems \style n
+* Subjekt A převede zprávu do bloků délky řetězcové reprezentace $n$.
+* Subjekt A vypočítá $m_p = \left|c^{d_p}\right|_p$
+* Subjekt A vypočítá $m_q = \left|c^{d_q}\right|_q$
+* Subjekt A vypočítá $h = \left|q_{inv}\cdot\left(m_p - m_q\right)\right|_p$
+* Subjekt A vypočítá OT jako $m = m_q + h \cdot q$
+\enditems
+
+\secc Příklad
+
+$$p = 11, q = 23, e = 253, c = 2$$
+$$n = p \cdot q = 253$$
+$$e \cdot d_p \equiv 1 (\bmod\ 10)$$
+$$253 \cdot d_p \equiv 1 (\bmod\ 10)$$
+$$3 \cdot d_p \equiv 1 (\bmod\ 10)$$
+$$d_p = 7$$
+$$e \cdot d_q \equiv 1 (\bmod\ 23)$$
+$$253 \cdot d_q \equiv 1 (\bmod\ 23)$$
+$$1 \cdot d_q \equiv 1 (\bmod\ 23)$$
+$$d_q = 1$$
+$$q_{inv} = \left|q^{-1}\right|_{11} = 1$$
+$$VK = \left(n, e\right) = \left(253, 253\right)$$
+$$SK = \left(n, p, q, d_p, d_q, q_{inv}\right) = \left(253, 11, 1, 7, 1, 1\right)$$
+
+Dešifrování
+
+$$m_p = \left|c^{d_p}\right|_p = \left|2^7\right|_{11} = 7$$
+$$m_q = \left|c^{d_q}\right|_q = \left|2^1\right|_{23} = 2$$
+$$h = \left|q_{inv}\left(m_p - m_q\right)\right|_p = \left|1 \cdot \left(7 - 2\right)\right|_{11} = 5$$
+$$m = m_q + h \cdot q = 1 + 5 \cdot 23 = 117$$
+
+Šifrování
+
+$$c = \left|m^e\right|_n = \left|117^253\right|_11 = 2$$
 
 \sec El Gamal
 
@@ -247,8 +375,6 @@ $$OT_i = D_k\left(ŠT_{i} \right) \oplus ŠT_{i-1}$$
 
 \secc CFB - Cipher FeedBack
 
-Čistě synchronní.
-
 $$ŠT_0 = IV$$
 $$ŠT_i = E_k\left(ŠT_{i-1} \right) \oplus OT_i$$
 $$OT_i = E_k\left(ŠT_{i-1} \right) \oplus ŠT_i$$
@@ -260,6 +386,8 @@ $$OT_i = E_k\left(ŠT_{i-1} \right) \oplus ŠT_i$$
 $$H = IV = ŠT_0$$
 $$ŠT_i = OT_i \oplus H, H = E_k\left(H\right)$$
 $$OT_i = ŠT_i \oplus H, H = E_k\left(H\right)$$
+
+\chap Teorie informace
 
 \sec Narozeninový paradox
 
@@ -392,9 +520,38 @@ Požadováná délka klíče je 130 bitů.
 
 \chap Matematické postupy
 
-\sec Modulární operace
+\sec Malá Fermatova věta
 
-\secc Dělení
+Musí platit, že $gcd\left(n,m\right) = 1$, tedy jsou nesoudělná.
+
+$$a^{\varphi\left( n \right)} \equiv 1\left(\bmod\ m\right)$$
+
+\sec Eulerova funkce
+
+Vyjadřuje počet čísel $0 \leq k \leq n$ takových, že $gcd(k,n) = 1$. Platí následující vztahy:
+
+$$\varphi(n \cdot k) = \varphi(n) \cdot \varphi(k)$$
+$$\varphi(p) = p - 1$$
+$$\varphi(p) = (p - 1) \cdot p^{p-1}$$
+
+\sec Modulární rovnice (kongruence)
+
+Vyjadřují, že obě strany rovnice mají stejný zbytek po dělení modulem. Platí následující rovnice:
+
+$$a \equiv b\left(\bmod\ m\right) \Leftrightarrow b \equiv a\left(\bmod\ m\right)$$
+
+$$a + c\equiv b\left(\bmod\ m\right) \Leftrightarrow a \equiv b - c\left(\bmod\ m\right)$$
+
+$$a\equiv b\left(\bmod\ m\right) \Leftrightarrow {a / c} \equiv {b / c}\left(\bmod\ m\right), gcd(c,m) = 1$$
+
+$$a \equiv b\left(\bmod\ m\right) \Leftrightarrow a \cdot c \equiv b \cdot c \left(\bmod\ m\right)$$
+
+$$a \equiv b\left(\bmod\ m\right) \Leftrightarrow a ^ c \equiv b ^ c \left(\bmod\ m\right)$$
+
+$$a \equiv b\left(\bmod\ m\right) \Leftrightarrow a / c \equiv b / c \left(\bmod\ m / c\right)$$
+
+
+\sec Modulární operace
 
 Definice dělení jako násobení multiplikativní inverzí.
 
@@ -459,23 +616,27 @@ $$10 = 2 \cdot 5 \rightarrow gcd(130,15) = 5$$
 
 Používá se k nalezení inverze čísla $a$ v modulo $m$. $\beta_{n-1} = a^{-1}$
 
-\begmulti 2
+\hbox to \hsize {
 
-\table{|r|ccc|}{\crli
-m & 1 & 0 & - \cr
-a & 0 & 1 & $q_i - 1$ \crli
-$r_i$ & $\alpha_i$ & $\beta_i$ & $q_i$ \cr
-$r_{i+1}$ & $\alpha_{i+1}$ & $\beta_{i+1}$ & $q_{i+1}$ \cr
-$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \cr
-$r_{n} = 0$ & $\alpha_{n}$ & $\beta_{n}$ & $q_{n}$ 
-\crli}
+	\table{|r|ccc|}{\crli
+	m & 1 & 0 & - \cr
+	a & 0 & 1 & $q_i - 1$ \crli
+	$r_i$ & $\alpha_i$ & $\beta_i$ & $q_i$ \cr
+	$r_{i+1}$ & $\alpha_{i+1}$ & $\beta_{i+1}$ & $q_{i+1}$ \cr
+	$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \cr
+	$r_{n} = 0$ & $\alpha_{n}$ & $\beta_{n}$ & $q_{n}$ 
+	\crli}
 
-$$r_i = r_{i-2} - q_{i-1} \cdot r_{i-1}$$
-$$\alpha_i = \alpha_{i-2} - q_{i-1} \cdot \alpha_{i-1}$$
-$$\beta_i = \beta_{i-2} - q_{i-1} \cdot \beta_{i-1}$$
-$$q_i = \lc r_{i-1} \over r_i \rc$$
+	\hbox {
+		\vbox{
+		$$r_i = r_{i-2} - q_{i-1} \cdot r_{i-1}$$
+		$$\alpha_i = \alpha_{i-2} - q_{i-1} \cdot \alpha_{i-1}$$
+		$$\beta_i = \beta_{i-2} - q_{i-1} \cdot \beta_{i-1}$$
+		$$q_i = \lc r_{i-1} \over r_i \rc$$
+		}
+	}
 
-\endmulti
+}
 
 \sec Multiplikativní grupy
 
@@ -486,6 +647,7 @@ $$\left|g^i\right| = Z_m; i = 1 \ldots m - 1$$
 \noindent
 Tvoříme řádky v tabulce. Pokud narazíme na $z = 1$, pak to znamená, že všechny dosud napsaná $z$ se zopakují (včetně té 1), takže se začínáme cyklit. Pokud narazíme na $z = -1$, tak se začne všechno opakovat jen s opačným znaménkem.
 
+\medskip
 \table{|c|c|}{\crli
 $i$ & $\left|g^i\right|_m$ \crli
 1 & $z_1$ \cr
