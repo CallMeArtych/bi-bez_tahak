@@ -13,3 +13,6 @@ clean:
 
 run: $(DOC).pdf
 	$(PDF) $(DOC).pdf
+
+refresh: $(DOC).pdf
+	pkill -SIGHUP mupdf
