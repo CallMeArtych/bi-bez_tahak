@@ -2,6 +2,8 @@
 \chyph
 \input lmfonts
 \typosize[12/14]
+% \parindent=0pt
+% \parskip=3pt
 
 \def\lc{\left\lfloor}   
 \def\rc{\right\rfloor}
@@ -14,15 +16,24 @@ používáme stále stejnou záměnu pro celý OT (písmeno A se vždy zobrazí 
 
 \sec Polyalfabetická
 
-písmeno může mít více záměn
+Písmeno může mít více záměn. Například systém Vigenerovských šifer, který funguje jako Ceasarova šifra, jen se používá množina klíču, které se postupně střídají pro použitý při šifrování (po znacích).
+
+\sec Kódové knihy
+
+Šifrování pomocí slovníku. Přepis slov na jiná. Zá kódovou knihu lze považovat i cizý jazyk, který nikdo jiný nezná.
 
 \sec Substituční
 
-druh šifry, při které dochází k záměně (substituci) nějaké množiny symbolů za jinou množinu symbolů. Cílem substituce je konfúze, tj. ztížení určení způsobu transformace zprávy a klíče na ŠT.
+Druh šifry, při které dochází k záměně (substituci) nějaké množiny symbolů za jinou množinu symbolů. 
+Cílem substituce je konfúze, tj. ztížení určení způsobu transformace zprávy a klíče na ŠT.
+Substituční šifry jsou symetrické.
+Útok pomocí frekvenční analýzy.
 
 \sec Transpoziční
 
-spočívá ve změně pořadí znaků podle určitého pravidla. Cílem transpozice je difúze, tj. rozptyl informace zprávy nebo klíče po celé šíří ŠT.
+Spočívá ve změně pořadí znaků podle určitého pravidla. Například napíšeme zprávu do matice po řádcích a výstupem bude text přepsaný po sloupcích. 
+Cílem transpozice je difúze, tj. rozptyl informace zprávy nebo klíče po celé šíří ŠT.
+Transpoziční šifry jsou symetrické.
 
 \sec Bloková
 
@@ -30,11 +41,11 @@ spočívá ve změně pořadí znaků podle určitého pravidla. Cílem transpoz
 
 \sec Proudová
 
-bloková šífra s velikostí bloku 1, ale každý blok je zpracováván jinou substitucí.
+Bloková šífra s velikostí bloku 1, ale každý blok je zpracováván jinou substitucí. Použití inicializačního vektoru. 
 
 \sec Asymetrická
 
-klíč pro dešífrování se nerovná klíči pro šífrování.
+klíč pro dešífrování se nerovná klíči pro šífrování. Šifrujeme veřejným klíčem a dešifrujeme privátním klíčem.
 
 \sec Symetrická 
 
@@ -42,7 +53,7 @@ klíč pro dešífrování se rovná klíči pro šífrování.
 
 \sec Synchronní proudová
 
-proud hesla nezávisí na OT ani na ŠT. Výpadej jednoho znaku nenaruší celý proces. 
+Proud hesla nezávisí na OT ani na ŠT. Výpadek jednoho znaku nenaruší celý proces. 
 
 \sec Asynchronní proudová 
 
@@ -87,9 +98,9 @@ $$
 p = |a^{-1} \cdot (c-b)|_m
 $$
 
-\sec Blokové šifry
+\sec Hillova šifra
 
-Šifrují bloky velikosti $n$ podle vzorce:
+Pro velikost bloku $n$ a abecedu o velikosti 26 vznikne $26^n$ různých bloků. Šifrují bloky velikosti $n$ podle vzorce:
 
 $$
 \left| \left(\matrix{c_1 \cr \vdots \cr c_n}\right) \right|_m = \left| \left(\matrix{A_{1,1} & \ldots & A_{1,n} \cr \vdots & \ddots & \vdots \cr A_{n_1} & \ldots & A_{n,n} \cr}\right) \cdot \left(\matrix{p_1 \cr \vdots \cr p_n}\right) \right|_m
@@ -100,6 +111,11 @@ a dešifrují podle
 $$
 \left| \left(\matrix{p_1 \cr \vdots \cr p_n}\right) \right|_m = \left| \left(\matrix{A_{1,1} & \ldots & A_{1,n} \cr \vdots & \ddots & \vdots \cr A_{n_1} & \ldots & A_{n,n} \cr}\right) \cdot \left(\matrix{c_1 \cr \vdots \cr c_n}\right) \right|_m
 $$
+
+\noindent 
+musí být splněny následující podmínky:
+
+$$gcd(det A, 26) = 1$$
 
 \noindent
 \secc Příklad:
@@ -126,15 +142,17 @@ $$
 \sec Exponenciální šífra
 
 Pro většínu příkládů se uvažuje jako vstupní abeceda angličtina. Tím pádem $k = 25$ a $max = 2$.
+Založené na modulárním umocňování. Bezpečnostním prvkem je problém diskrétního logaritmu.
+Složitost $O((log_2 m)^3)$ bitových operací pro šifrování i dešífrování.
 
 \secc Šifrování
 
 \begitems \style n
-* Zvolíme $e$ a $m$, takové že $gcd(e,m) = 1$
+* Zvolíme $e$ a $m$ prvočíslo, takové že $gcd(e,m - 1) = 1$
 * Převedeme každý znak v otevřeném textu na jeho číselnou reprezentaci zarovranou nulama na velikost největší číselné reprezentace znaku abecedy ($max$).
 * Zvolíme velikost bloku $n$ takovou, aby platilo: $max \cdot n \cdot str(k) < m$ a zároveň byla největší možná.
 * Vezmeme blok $n \cdot max$ číslic a použijeme na výsledné číslo vzorec:
-$$c=\left| p^e \right|_{m}: e = \left| d^{-1} \right|_m$$
+$$c=\left| p^e \right|_{m}: e = \left| d^{-1} \right|_{m-1}$$
 \enditems
 
 
@@ -143,7 +161,7 @@ $$c=\left| p^e \right|_{m}: e = \left| d^{-1} \right|_m$$
 \begitems \style n
 * Vypočítáme velikost bloku číslic $n$.
 * Použijeme vzorec pro dešifrování pro každý blok číslic velikosti $max \cdot n$ a převedeme po $max$ podblocích zpátky na znaky.
-$$p=\left| c^d \right|_{m}: d = \left| e^{-1} \right|_m$$
+$$p=\left| c^d \right|_{m}: d = \left| e^{-1} \right|_{m-1}$$
 \enditems
 
 \secc Příklad
@@ -154,7 +172,7 @@ Jedná se o anglickou abecedu. Tím pádem $k = 25$ a $max = 2$.
 $$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
 
 \begitems \style n
-* Ověříme $gcd(e, m) = 1$.
+* Ověříme $gcd(e, m - 1) = 1$.
 * Určíme velikost bloku. $2525 < 2633$, tím pádem blokem budou 2 písmena převedená 4 číslice.
 * Převedeme šifrový text na jeho číselný ekvivalent
 $$
@@ -208,12 +226,13 @@ $$THIS IS AN EXAMPLE OF AN EXPONENTIATION CIPHER$$
 * Zvolíme $m$ jako velké prvočíslo a $0 < a < m$.
 * Každý subjekt si zvolí svoje tajné $k_i, gcd(k_i, m - 1) = 1$ a vypočítá $y_i = \left| a^{k_i} \right|_m$.
 * Klíč bude mít podobu $K = a^{k_1 \cdot \ldots \cdot k_n}$
-* 
 \enditems
+
+\centerline {\picwidth=\hsize \inspic dh3m.png }
 
 \sec RSA
 
-Bezpečtnostním prvkem je problém faktorizace.
+Bezpečtnostním prvkem je problém faktorizace. Prokazatelně bezpečná šifra.
 
 \secc Příprava
 
@@ -261,7 +280,7 @@ $$m = \left|c_i^d\right|_n$$
 
 \sec RSA-CRT
 
-Zrychlení 4 až 8 násobné oproti půuvodnímu dešifrovacímu výpočtu. Princip vychází z čínské věty o zbytcích.
+Zrychlení 4 až 8 násobné oproti původnímu dešifrovacímu výpočtu. Princip vychází z čínské věty o zbytcích.
 
 \secc Příprava
 
@@ -354,20 +373,37 @@ Založen na problému diskrétního logaritmu.
 * Subjekt A dešifruje zprávu podle $p = \left|c \cdot K^{-1}\right|_m$
 \enditems
 
+\sec AES
+
+Šifruje bloky o velikosti 126 bitů. Velikost klíče 128, 192 nebo 256 bitů.
+
+\sec DES
+
+Iterovaná šífra Feistelova typu.
+64-bit klíč z čehož je 8 kontrolních, tím pádem pouze 56 efektivních. 3DES má efektivitu rovnou 3 použití DES, tím pádem efektivních bitů je $3 \cdot 56$. 
+Šifruje bloky o velikosti 64b.
+Inicilizační vektor nám zajistí, že 2 stejné zprávy mohou být odlišně zašifrovány.
+16 rund. Každá runda rozdělí blok na 2 poloviny $L$ a $R$ a provede se následující operace.
+
+$$L_{i+1} = R_i$$
+$$R_{i+1} = L_i \oplus f(R_i, K_i)$$
+
+Kde $K_i$ je subklíč a $f$ je rundovní funkce.
+
 \sec Operační módy
 
 \centerline {\picwidth=\hsize \inspic operacni_mody.png }
 
 \secc EBC - Electronic CodeBook
 
-Stejné bloky OT mají stejné bloky ŠT.
+Stejné bloky OT mají stejné bloky ŠT. Bloková šifra.
 
 $$ŠT_i = E_k\left(OT_i\right)$$
 $$OT_i = D_k\left(ŠT_i\right)$$
 
 \secc CBC - Cipher Block Chaining
 
-Možnost samosynchronizace při chybě (pokazí - pokažené - OK). Inicilizační vektor nám zajistí, že 2 stejné zprávy mohou být odlišně zašifrovány.
+Možnost samosynchronizace při chybě (pokazí - pokažené - OK). 
 
 $$ŠT_0 = IV$$
 $$ŠT_i = E_k\left(OT_i \oplus ŠT_{i-1} \right)$$
@@ -375,17 +411,37 @@ $$OT_i = D_k\left(ŠT_{i} \right) \oplus ŠT_{i-1}$$
 
 \secc CFB - Cipher FeedBack
 
+Proudová.
+
 $$ŠT_0 = IV$$
 $$ŠT_i = E_k\left(ŠT_{i-1} \right) \oplus OT_i$$
 $$OT_i = E_k\left(ŠT_{i-1} \right) \oplus ŠT_i$$
 
 \secc OFB - Output FeedBack
 
-Čistě synchronní.
+Proudová, synchronní. Při použití stejného IV možno dešifrovat po prolomení jedné zprávy všechny zprávy.
 
 $$H = IV = ŠT_0$$
 $$ŠT_i = OT_i \oplus H, H = E_k\left(H\right)$$
 $$OT_i = ŠT_i \oplus H, H = E_k\left(H\right)$$
+
+\secc CTR
+
+Proudová, synchronní. Při použití stejného IV možno dešifrovat po prolomení jedné zprávy všechny zprávy.
+
+$$CTR_i = |IV + i - 1|_{2^B}, H_i = E_k\left(CTR_i\right), ŠT_i = OT_i \oplus H_i, i = 1,2,\ldots,n$$
+$$CTR_i = |IV + i - 1|_{2^B}, H_i = E_k\left(CTR_i\right), OT_i = ŠT_i \oplus H_i, i = 1,2,\ldots,n$$
+
+\sec BB84
+
+Používán pro zřízení společného klíče.
+
+\chap Ověření pravosti zpráv
+
+Certifikát je utajovaná struktura, která obsahuje VK nebo SK držitele, identifikační údaje držitele certifikátu, dobu platnosti certifikátu.
+Tato sruktura je podepsána SK autority a každý účastník si může ověřit jeho pravost pomocí VK autority.
+
+Podpis nám zaručuje nezfalšovatelnost, integritu (nelze změnit zprávu bez zneplatnění podpisu) a nepopiratelnost.
 
 \chap Teorie informace
 
@@ -520,11 +576,15 @@ Požadováná délka klíče je 130 bitů.
 
 \chap Matematické postupy
 
+\sec Eulerova věta
+
+Musí platit, že $gcd\left(a,m\right) = 1$, tedy jsou nesoudělná.
+
+$$a^{\varphi\left( m \right)} \equiv 1\left(\bmod\ m\right)$$
+
 \sec Malá Fermatova věta
 
-Musí platit, že $gcd\left(n,m\right) = 1$, tedy jsou nesoudělná.
-
-$$a^{\varphi\left( n \right)} \equiv 1\left(\bmod\ m\right)$$
+$$a^{p - 1} \equiv 1\left(\bmod\ p\right)$$
 
 \sec Eulerova funkce
 
@@ -583,6 +643,7 @@ Pro čísla větší lze použít rozšířený euklidův algoritmus.
 Mějme zadáno $\left|a^k\right|_m$, kde $k$ je opravdu velké číslo.
 
 \begitems \style n
+* Pokud je splněna podmínka $gcd(a,m) = 1$, pak lze využít vzorce $\left|\left|a\right|_{m}^{\left|b\right|_{\phi(m)}}\right|_m$
 * Rozdělíme číslo na součin jeho mocnin: $a^k=a^{k_1} \ldots \cdot a^{k_n}$, kde $\sum k_n = k$ a $k_n$ jsou čísla ve tvaru $2 \cdot n \in Z$
 * pro každé číslo $i < max(k_n)$ množiny mocnin vypočítáme jeho hodnotu v modulu m, využíváme k tomu předchozí hodnoty.
 \enditems
@@ -638,13 +699,13 @@ Používá se k nalezení inverze čísla $a$ v modulo $m$. $\beta_{n-1} = a^{-1
 
 }
 
-\sec Multiplikativní grupy
+\sec Grupy
 
-Algoritmus ověření zda $g$ je generátorem grupy $m$.
+Rozlišujeme mezi aditivní ($\left|g\cdot i\right|_m$) a multiplikativní grupou $\left|g^i\right|_m$.
+Algoritmus ověření zda $g$ je generátorem multiplikativní grupy $m$.
 
 $$\left|g^i\right| = Z_m; i = 1 \ldots m - 1$$
 
-\noindent
 Tvoříme řádky v tabulce. Pokud narazíme na $z = 1$, pak to znamená, že všechny dosud napsaná $z$ se zopakují (včetně té 1), takže se začínáme cyklit. Pokud narazíme na $z = -1$, tak se začne všechno opakovat jen s opačným znaménkem.
 
 \medskip
@@ -656,12 +717,20 @@ $\vdots$ & $\vdots$ \cr
 $m-1$ & $z_{m-1}$ \cr
 \crli}
 
+\sec Problém diskrétního logaritmu
+
+Například u exponenciální šifry šifrujeme vztah pomocí vztahu $c=\left|p^e\right|$ a jako útočních chceme zjistit šifrový klíč $e$.
+Tím pádem řešíme vztah $\left|log_{p}(c)\right|_m = e$. Toto lze vyřešit hrubou silou v čase $O(n)$, kde $n$ je řád cyklické grupy (asi m?).
+
 \chap Hašovací funkce
+
+Základním kamenem funkce je tzv. orákulum - stroj podivných vlastností, který na vstupy odpovídá nějakým výstupem. Pro stejný vstup je vždy stejný výstup.
 
 Hašovací funkce $h$ zpracovává praktický neomezeně dlouhá vstupní data $M$ na výstupní hašový kód $h(M)$ stanovené délky $n$ bitů.
 Kvůli potenciálně strojově nezvladnutelné délce vstupní zprávy, ta musí být nejprve rozdělená na bloky konstantní velikosti (např. 512 bitů u MD5 a SHA-0/1/256).
 
 Ke vstupní zprávě je vždy doplněn padding tak, že celá zpráva je zarovnáná na celé bloky (i přesto že byla zarovnáná i bez paddingu). Padding začíná 1 a je doplněn nulama tak, aby do konce bloku zbývalo 64 bitu, kam je uložená délka původní zprávy.
+Tomuto postupu se říká Damgard-Merkelovo zesílení, protože do hashovacího procesu vstupuje i délka zprávy.
 
 \begitems \style o
 * MD5 (128-bitový hash kód)
@@ -794,5 +863,39 @@ k \approx 2^n \lim_{x \rightarrow 0}{\ln\left({1 \over x}\right)}
 $$
 
 \centerline{Logický $k$ nemůže být vetší než $N$, proto $k = N = 2^{160}$}
+
+\sec MAC
+
+Používá blokovou šifru. Použití je pro symetrické digitální podpisy. Funkce zajišťuje jak integritu tak autentizaci přenášené zprávy.
+
+$$otisk = f(text, klíč)$$
+
+\sec HMAC
+
+Používá hash oproti MAC. Oveření datové integrity a jednak na autentizaci zprávy.
+Pro ověření původu zprávy se musí zřídit společný klíč K.
+
+\chap Bezpečnost
+
+\sec Informační bezpečnost
+
+Dělíme na síťovou (bezpečnost přenášených dat) a počítačovou bezpečnost (ochrana dat v počítači). 
+Útoky dělíme na aktivní, které modifikují IS (předstírání identity, modifikace dat, DOS) a pasivní (odposlech a analýza komunikace).
+
+\medskip
+\noindent Služby bezpečnosti:
+\begitems
+* autentizase (potvrzení identity uživatele)
+* řízení přístupů (ověření práv uživatele na základě autentizace)
+* důvěrnost dat (ochrana dat před neautorizovaným odhalením)
+* integrita (ochrana před neautorizovanou modifikací)
+* ochrana před odmítnutím původní zprávy (důkaz o původu zprávy)
+\enditems
+
+\medskip
+\noindent Služba dostupnosti
+
+Mechanizmy bezpečnosti podporují služby bezpečnosti (šifrování, digitální podpis, ...)
+
 
 \end
